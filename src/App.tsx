@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
@@ -12,9 +12,9 @@ const PaymentCalculator = () => {
   }
 
   const [platform, setPlatform] = useState('payt');
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState<number>(0);
   const [includeShipping, setIncludeShipping] = useState(false);
-  const [shippingCost, setShippingCost] = useState('14.90');
+  const [shippingCost, setShippingCost] = useState<number>(14.9);
 
   // Payt fees
   const paytFees = {
@@ -32,14 +32,14 @@ const PaymentCalculator = () => {
     '12': 15.99
   };
 
-  const calculateInstallment = (totalAmount, installments, fee) => {
+  const calculateInstallment = (totalAmount: number, installments: number, fee: number) => {
     const feeDecimal = fee / 100;
-    const baseAmount = Number(totalAmount);
+    const baseAmount = totalAmount;
     const shippingAmount = includeShipping ? Number(shippingCost) : 0;
     const totalWithShipping = baseAmount + shippingAmount;
     const totalWithFee = totalWithShipping * (1 + feeDecimal);
     const installmentAmount = totalWithFee / installments;
-    
+  
     return {
       installmentValue: installmentAmount,
       totalAmount: totalWithFee,
@@ -47,7 +47,7 @@ const PaymentCalculator = () => {
       baseAmount,
       shippingAmount,
     };
-  };
+  };  
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
@@ -100,7 +100,7 @@ const PaymentCalculator = () => {
                       className="pl-8"
                       placeholder="0,00"
                       value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
+                      onChange={(e) => setAmount(Number(e.target.value))}
                       min="0"
                       step="0.01"
                     />
@@ -133,7 +133,7 @@ const PaymentCalculator = () => {
                           type="number"
                           className="pl-8"
                           value={shippingCost}
-                          onChange={(e) => setShippingCost(e.target.value)}
+                          onChange={(e) => setShippingCost(Number(e.target.value))}
                           min="0"
                           step="0.01"
                         />
