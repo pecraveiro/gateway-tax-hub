@@ -10,10 +10,18 @@ const PaymentCalculator = () => {
     return new Date().getFullYear();
   }
 
+  const DEFAULT_SHIPPING = 14.90;
+
   const [platform, setPlatform] = useState('payt');
   const [amount, setAmount] = useState<number | null>(null);
   const [includeShipping, setIncludeShipping] = useState(false);
   const [shippingCost, setShippingCost] = useState<number | null>(null);
+
+  // Função para lidar com a mudança do switch de frete
+  const handleShippingToggle = (checked: boolean) => {
+    setIncludeShipping(checked);
+    setShippingCost(checked ? DEFAULT_SHIPPING : null);
+  };
 
   // Payt fees
   const paytFees = {
@@ -108,7 +116,7 @@ const PaymentCalculator = () => {
                       <Switch
                         id="shipping-toggle"
                         checked={includeShipping}
-                        onCheckedChange={setIncludeShipping}
+                        onCheckedChange={handleShippingToggle}
                       />
                       <div>
                         <label htmlFor="shipping-toggle" className="text-sm font-medium">
