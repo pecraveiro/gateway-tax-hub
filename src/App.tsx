@@ -31,19 +31,19 @@ const PaymentCalculator = () => {
   };
 
   const paytFees = {
-    "1": 4.49,
-    "2": 7.99,
-    "3": 8.99,
-    "4": 9.99,
-    "5": 10.49,
-    "6": 10.99,
-    "7": 11.99,
-    "8": 12.99,
-    "9": 13.99,
-    "10": 14.49,
-    "11": 14.99,
-    "12": 15.5,
-  };
+    '1': 0, // Taxa de 0% para pagamento à vista
+    '2': 4.51,
+    '3': 6.036,
+    '4': 7.58,
+    '5': 9.15,
+    '6': 10.72,
+    '7': 12.31,
+    '8': 13.92,
+    '9': 15.548,
+    '10': 17.19,
+    '11': 18.786,
+    '12': 20.48,
+};
 
   const calculateInstallment = (
     totalAmount: number,
@@ -56,7 +56,9 @@ const PaymentCalculator = () => {
       includeShipping && shippingCost !== null ? shippingCost : 0;
     const totalWithShipping = baseAmount + shippingAmount;
     const totalWithFee = totalWithShipping * (1 + feeDecimal);
-    const installmentAmount = totalWithFee / installments;
+
+    // Divisão das parcelas
+    const installmentAmount = Math.round((totalWithFee / installments) * 100) / 100;
 
     return {
       installmentValue: installmentAmount,
@@ -66,6 +68,7 @@ const PaymentCalculator = () => {
       shippingAmount,
     };
   };
+
 
   return (
     <ThemeProvider>
