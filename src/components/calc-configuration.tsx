@@ -32,10 +32,29 @@ export function CalcConfiguration({
   includeShipping,
 }: CalcConfigurationProps) {
   const DEFAULT_SHIPPING = 14.9;
+  const MAX_VALUE = 10000;
 
   const handleShippingToggle = (checked: boolean) => {
     setIncludeShipping(checked);
     setShippingCost(checked ? DEFAULT_SHIPPING : null);
+  };
+
+  const handleAmountChange = (value: string) => {
+    const numberValue = value ? Number(value) : null;
+    if (numberValue !== null && numberValue > MAX_VALUE) {
+      setAmount(MAX_VALUE);
+    } else {
+      setAmount(numberValue);
+    }
+  };
+
+  const handleShippingCostChange = (value: string) => {
+    const numberValue = value ? Number(value) : null;
+    if (numberValue !== null && numberValue > MAX_VALUE) {
+      setShippingCost(MAX_VALUE);
+    } else {
+      setShippingCost(numberValue);
+    }
   };
 
   return (
@@ -75,9 +94,7 @@ export function CalcConfiguration({
               className="pl-8"
               placeholder="0,00"
               value={amount !== null ? amount : ""}
-              onChange={(e) =>
-                setAmount(e.target.value ? Number(e.target.value) : null)
-              }
+              onChange={(e) => handleAmountChange(e.target.value)}
               min="0"
               step="0.01"
             />
@@ -113,11 +130,7 @@ export function CalcConfiguration({
                   type="number"
                   className="pl-8"
                   value={shippingCost !== null ? shippingCost : ""}
-                  onChange={(e) =>
-                    setShippingCost(
-                      e.target.value ? Number(e.target.value) : null
-                    )
-                  }
+                  onChange={(e) => handleShippingCostChange(e.target.value)}
                   placeholder="0,00"
                   min="0"
                   step="0.01"
